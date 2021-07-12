@@ -1,0 +1,21 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+		int end = nums.length;
+		int front = 0;
+		int length = 1;
+		while (front < end) {
+			int cursor = front + 1; // Grab the value
+
+			while (cursor < end && nums[front] >= nums[cursor])  // Get the next large index
+				cursor++;
+
+			if (cursor >= end)
+				return length;
+
+			nums[front + 1] = nums[cursor];
+			front++;
+			length++;
+		}
+		return length;
+	}
+}
