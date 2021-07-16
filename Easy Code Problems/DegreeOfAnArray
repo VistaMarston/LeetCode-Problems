@@ -1,0 +1,47 @@
+import java.util.HashMap;
+import java.util.ArrayList;
+public class Solution {
+	private HashMap<Integer, ArrayList<Integer>> uniqueNumber;
+	public int findShortestSubArray(int[] nums) {
+		hashMapCreation(nums);
+		return minLength();
+	}
+
+	private int minLength() {
+		int maxFreq = 0;
+		int length = 0;
+
+		for (ArrayList<Integer> value : uniqueNumber.values()) {
+			if (value.get(0) > maxFreq) {
+				maxFreq = value.get(0);
+				length = value.get(2) - value.get(1) + 1;
+			} else if (value.get(0) == maxFreq) {
+				int newLength = value.get(2) - value.get(1) + 1;
+				if (newLength < length) {
+					length = newLength;
+				}
+			}
+		}
+		return length;
+	}
+
+	private void hashMapCreation(int[] nums) {
+		uniqueNumber = new HashMap<>();
+		for(int index = 0; index < nums.length; index++) { // Loop through each num
+			int num = nums[index];
+			if (uniqueNumber.containsKey(num)) {
+				ArrayList<Integer> value = uniqueNumber.get(num);
+				value.set(2, index);
+				Integer frequency = value.get(0) + 1;
+				value.set(0, frequency);
+				uniqueNumber.replace(num, value);
+			} else {
+				ArrayList<Integer> value = new ArrayList<Integer>();
+				value.add(1);
+				value.add(index);
+				value.add(index);
+				uniqueNumber.put(num, value);
+			}
+		}
+	}
+}
